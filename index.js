@@ -27,9 +27,17 @@ async function run() {
     // await client.connect();
      
     const serviceCollection = client.db('tobehelper').collection('homeservice');
+    const allServiceCollection = client.db('tobehelper').collection('allServices');
+  
+    // get opatarion
 
     app.get('/homeservice', async(req, res) => {
         const result = await serviceCollection.find().toArray();
+        res.send(result);
+    })
+    
+    app.get('/allServices', async(req, res) => {
+        const result = await allServiceCollection.find().toArray();
         res.send(result);
     })
     

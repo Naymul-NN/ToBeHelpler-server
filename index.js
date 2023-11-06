@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const app = express();
 const port = process.env.PORT || 5000;
@@ -28,6 +28,7 @@ async function run() {
      
     const serviceCollection = client.db('tobehelper').collection('homeservice');
     const allServiceCollection = client.db('tobehelper').collection('allServices');
+    const bookingCollection = client.db('tobehelper').collection('bookingService');
   
     // get opatarion
 
@@ -40,8 +41,29 @@ async function run() {
         const result = await allServiceCollection.find().toArray();
         res.send(result);
     })
-    
 
+    // get single service
+
+    app.get ('/service/:id', async(req,res) =>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await serviceCollection.findOne(query);
+      res.send(result);
+  })
+    app.get ('/allservice/:id', async(req,res) =>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await allServiceCollection.findOne(query);
+      res.send(result);
+  })
+    
+    // post of booking
+    app.post('/bookingService', async(req,res)=>{
+      const cart = req.body;
+      console.log(cart);
+      const result = await bookingCollection.insertOne(cart);
+      res.send(result);
+  })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });

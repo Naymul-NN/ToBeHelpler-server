@@ -64,6 +64,12 @@ async function run() {
     res.send(products);
   });
 
+  app.get ('/providerServiceOne/:id', async(req,res) =>{
+    const id = req.params.id;
+    const query = {_id: new ObjectId(id)}
+    const result = await providerCollection.findOne(query);
+    res.send(result);
+})
 
     // post of booking
     app.post('/bookingService', async(req,res)=>{
@@ -79,6 +85,29 @@ async function run() {
       const result = await providerCollection.insertOne(cart);
       res.send(result);
   })
+  // update the service
+
+  app.put('/providerServiceOne/:id',async(req,res) => {
+    const id = req.params.id;
+    const filter = {_id: new ObjectId(id)}
+    const options = {upsert: true};
+    const updatedservice= req.body
+    console.log(updatedservice)
+    const product ={
+        $set: {
+            serviceName: updatedservice.serviceName,
+            info: updatedservice.info,
+            price: updatedservice.price,
+            date: updatedservice.date,
+            photo: updatedservice.photo,
+            Pname: updatedservice.Pname,
+            providerEmail: updatedservice.providerEmail,
+        }
+    }
+  const result = await providerCollection.updateOne(filter,product,options);
+  res.send(result);
+   })
+
     //  delete service
     app.delete("/providerservice/:id", async(req,res)=>{
       const id = req.params.id;

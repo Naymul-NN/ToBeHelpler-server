@@ -29,6 +29,7 @@ async function run() {
     const serviceCollection = client.db('tobehelper').collection('homeservice');
     const allServiceCollection = client.db('tobehelper').collection('allServices');
     const bookingCollection = client.db('tobehelper').collection('bookingService');
+    const providerCollection = client.db('tobehelper').collection('providerservice');
   
     // get opatarion
 
@@ -56,12 +57,26 @@ async function run() {
       const result = await allServiceCollection.findOne(query);
       res.send(result);
   })
-    
+
+  app.get('/providerservice/:providerEmail', async(req, res) => {
+    const providerEmail = req.params.providerEmail;
+    const products = await providerCollection.find({providerEmail:providerEmail}).toArray();
+    res.send(products);
+  });
+
+
     // post of booking
     app.post('/bookingService', async(req,res)=>{
       const cart = req.body;
       console.log(cart);
       const result = await bookingCollection.insertOne(cart);
+      res.send(result);
+  })
+  
+    app.post('/providerservice', async(req,res)=>{
+      const cart = req.body;
+      console.log(cart);
+      const result = await providerCollection.insertOne(cart);
       res.send(result);
   })
 

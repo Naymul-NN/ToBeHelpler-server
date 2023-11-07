@@ -43,6 +43,11 @@ async function run() {
         res.send(result);
     })
 
+    app.get('/bookingService/:providerEmail', async(req, res) => {
+      const providerEmail = req.params.providerEmail;
+      const products = await bookingCollection.find({userEmail:providerEmail}).toArray();
+      res.send(products);
+    });
     // get single service
 
     app.get ('/service/:id', async(req,res) =>{
@@ -63,6 +68,7 @@ async function run() {
     const products = await providerCollection.find({providerEmail:providerEmail}).toArray();
     res.send(products);
   });
+  
 
   app.get ('/providerServiceOne/:id', async(req,res) =>{
     const id = req.params.id;

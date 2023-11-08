@@ -9,9 +9,7 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-
 const uri = `mongodb+srv://${process.env.USER_NAME}:${process.env.USER_KEY}@cluster0.4kfubsh.mongodb.net/?retryWrites=true&w=majority`;
-
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -80,14 +78,14 @@ async function run() {
     // post of booking
     app.post('/bookingService', async(req,res)=>{
       const cart = req.body;
-      console.log(cart);
+      // console.log(cart);
       const result = await bookingCollection.insertOne(cart);
       res.send(result);
   })
   
     app.post('/providerservice', async(req,res)=>{
       const cart = req.body;
-      console.log(cart);
+      // console.log(cart);
       const result = await providerCollection.insertOne(cart);
       res.send(result);
   })
